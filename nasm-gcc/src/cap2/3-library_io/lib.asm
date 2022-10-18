@@ -1,6 +1,8 @@
 global _start;
+section .data;
+	string: db 'ola';
 
-section .text
+section .text;
 
 exit:
 	xor rdi,rdi;
@@ -78,11 +80,8 @@ print_int:
 	call print_uint;
 	ret;
 
-_start:
-	call read_char;
-	call exit;
-
 read_char:
+
 	push 0;
 	xor rax, rax;
 	xor rdi, rdi;
@@ -92,8 +91,71 @@ read_char:
 	pop rax;
 	ret;
 
+_start:
+	mov rdi, string;
+	mov rsi, 4;
+	call read_word;
+	call exit;
+
 read_word:
-    ret
+    	push r14;
+	push r15;
+	xor r14, r14;
+	mov r15, rsi;
+	dec r15;
+
+.A:
+	push rdi;
+	call read_char;
+	pop rdi;
+
+	cmp al, ' ';
+	je .A;
+	cmp al, 10;
+	je .A;
+	cmp al, 13;
+	je .A;
+	cmp al, 9;
+	je .A;
+	test al, al;
+	
+.B:
+	mov byte [rdi+r14], al;
+	inc r14;
+
+	push rdi;
+	call read_char;
+	pop rdi;
+	cmp al, ' ';
+	je .C;
+	cmp al, 10;
+	je .C;
+	cmp al, 13;
+	je .C;
+	cmp al, 9;
+	je .C;
+	test al, al;
+	jz .C;
+	cmp r14, r15;
+	je .D;
+	
+	jmp .B;
+
+.C:
+	mov byte [rdi+r14], al;
+	mov rax, rdi;
+
+	mov rdx, r14;
+	pop r15;
+	pop r14;
+	ret;
+
+.D:
+	xor rax, rax;
+	pop r15;
+	pop r14;
+	ret;
+
  
 string_equals:
     xor rax, rax

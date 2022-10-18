@@ -1,3 +1,5 @@
+global _start;
+
 section .text
 
 exit: 
@@ -136,6 +138,11 @@ read_char:
     syscall
     pop rax
     ret 
+
+_start:
+	call read_char;
+	call print_newline;
+	call exit;
 
 read_word:
     push r14
