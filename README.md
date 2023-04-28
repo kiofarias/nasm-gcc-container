@@ -1,4 +1,4 @@
-AA Docker container configured for writing NASM x86 Assembly & C.
+A Docker container configured for writing NASM x86 Assembly & C.
 
 The container has NASM, GCC, GDB, Make, Vim, et cetera installed.
 
